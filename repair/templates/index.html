@@ -1,13 +1,447 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>หน้าแรก</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>หน้าแรก</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="10" cy="50" r="0.5" fill="rgba(255,255,255,0.05)"/><circle cx="90" cy="30" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      pointer-events: none;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      gap: 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .nav-link {
+      display: inline-block;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+      background-size: 300% 100%;
+      animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+
+      0%,
+      100% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .form-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .form-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 2px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #4a5568;
+      font-size: 0.95rem;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-family: 'Noto Sans Thai', sans-serif;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Noto Sans Thai', sans-serif;
+    }
+
+    .submit-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .form-container {
+        padding: 25px;
+        margin: 10px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .form-title {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Floating Animation */
+    .form-container {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Input Animation */
+    .form-group {
+      animation: slideUp 0.6s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .form-group:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .form-group:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .form-group:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .form-group:nth-child(4) {
+      animation-delay: 0.4s;
+    }
+
+    .form-group:nth-child(5) {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes slideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>ฟอร์มแจ้งซ่อม</h1>
-    <a href="report">หน้าฟอร์ม</a>
-    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quae reprehenderit minus, sit deleniti, culpa autem cumque earum architecto placeat quo aspernatur ab pariatur qui quos quis, doloremque officiis. Itaque, expedita!</p>
+  <div class="container">
+    <!-- <div class="header">
+      <h1>ฟอร์มแจ้งซ่อม</h1>
+      <a href="report" class="nav-link">หน้าฟอร์ม</a>
+    </div> -->
+
+    <div style="margin-top: 13%;" class="form-container">
+      <h2 class="form-title">ฟอร์มแจ้งซ่อม</h2>
+      <form action="#" method="POST">
+
+        <div class="form-group">
+          <label for="email">อาคาร</label>
+          <input type="text" id="building" name="bulding" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fullname">ชั้น</label>
+          <input type="text" id="floor" name="floor" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="department">หน่วยงานผู้แจ้ง <span class="required">*</span></label>
+          <input type="text" id="department" name="department" placeholder="เช่น ฝ่ายไอที, ฝ่ายบุคคล, แผนกการเงิน"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="contact">เบอร์ภายในติดต่อได้ <span class="required">*</span></label>
+          <input type="tel" id="contact" name="contact" placeholder="เช่น 1234, 5678" required>
+        </div>
+
+        <div class="form-group">
+          <label for="repair_items">รายการแจ้งซ่อม <span class="required">*</span></label>
+          <textarea id="repair_items" name="repair_items"
+            placeholder="กรุณาระบุรายละเอียดการซ่อม เช่น&#10; ไฟเปิดไม่ติด" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="image">รูปภาพประกอบ</label>
+          <div class="file-input-container">
+            <input type="file" id="image" name="image" accept="image/*" class="file-input" multiple>
+            <label for="image" class="file-input-label">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              คลิกเพื่อเลือกรูปภาพ หรือลากไฟล์มาวาง
+            </label>
+          </div>
+          <div id="file-preview" class="file-preview" style="display: none;"></div>
+        </div>
+
+        <button type="submit" class="submit-btn">ส่งแจ้งซ่อม</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // File input preview
+    const fileInput = document.getElementById('image');
+    const filePreview = document.getElementById('file-preview');
+    const fileLabel = document.querySelector('.file-input-label');
+
+    fileInput.addEventListener('change', function (e) {
+      const files = e.target.files;
+      if (files.length > 0) {
+        let fileNames = [];
+        for (let i = 0; i < files.length; i++) {
+          fileNames.push(files[i].name);
+        }
+        filePreview.innerHTML = `<strong>ไฟล์ที่เลือก:</strong> ${fileNames.join(', ')}`;
+        filePreview.style.display = 'block';
+        fileLabel.style.borderColor = '#667eea';
+        fileLabel.style.backgroundColor = 'rgba(102,126,234,0.1)';
+      } else {
+        filePreview.style.display = 'none';
+        fileLabel.style.borderColor = '#cbd5e0';
+        fileLabel.style.backgroundColor = 'rgba(255,255,255,0.8)';
+      }
+    });
+
+    // Form submission
+    document.querySelector('form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      // Get form data
+      const formData = new FormData(this);
+      const data = {};
+
+      for (let [key, value] of formData.entries()) {
+        if (key !== 'image') {
+          data[key] = value;
+        }
+      }
+
+      // Show success message
+      alert('ส่งแจ้งซ่อมเรียบร้อยแล้ว!\n\nข้อมูลที่ส่ง:\n' +
+        'อาคาร: ' + data.building + '\n' +
+        'ชั้น: ' + data.floor + '\n' +
+        'หน่วยงาน: ' + data.department + '\n' +
+        'เบอร์ติดต่อ: ' + data.contact + '\n' +
+        'รายการซ่อม: ' + data.repair_items);
+
+      // Reset form
+      this.reset();
+      filePreview.style.display = 'none';
+      fileLabel.style.borderColor = '#cbd5e0';
+      fileLabel.style.backgroundColor = 'rgba(255,255,255,0.8)';
+    });
+
+    // Drag and drop functionality
+    const fileInputLabel = document.querySelector('.file-input-label');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      fileInputLabel.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      fileInputLabel.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      fileInputLabel.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+      fileInputLabel.style.borderColor = '#667eea';
+      fileInputLabel.style.backgroundColor = 'rgba(102,126,234,0.1)';
+    }
+
+    function unhighlight(e) {
+      if (!fileInput.files.length) {
+        fileInputLabel.style.borderColor = '#cbd5e0';
+        fileInputLabel.style.backgroundColor = 'rgba(255,255,255,0.8)';
+      }
+    }
+
+    fileInputLabel.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      fileInput.files = files;
+
+      // Trigger change event
+      const event = new Event('change', { bubbles: true });
+      fileInput.dispatchEvent(event);
+    }
+  </script>
+
 </body>
+
 </html>
