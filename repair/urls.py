@@ -4,5 +4,5 @@ from repair import views
 urlpatterns = [
     path('',views.index),
     path('report',views.report),
-    path('form',views.form)
+    path('report_form',views.report_form)
 ]

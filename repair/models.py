@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class Report(models.Model):
     building = models.CharField(max_length=120)
-    floor = models.CharField(max_length=2)
+    floor = models.CharField(max_length=3)
     agency = models.CharField(max_length=255)
     tel = models.CharField(max_length=10)
     report = models.TextField()
@@ -20,6 +20,7 @@ class Report(models.Model):
 
 
 class Number(models.Model):
-    number=models.IntegerField(blank=True)
+    year = models.IntegerField(default=2025)
+    number=models.IntegerField(default=0)
 
     

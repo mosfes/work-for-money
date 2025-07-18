@@ -7,6 +7,8 @@
 </head>
 <body>
     <h1>การแจ้งซ่อม</h1>
-    <a href="/">หน้ารายรวมรายการซ่อม</a>
+    {% for a in all2 %}
+     <p>{{a.building}}</p>
+    {% endfor %}
 </body>
 </html>
