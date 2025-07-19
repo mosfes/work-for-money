@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from repair.models import Report,Number
 from django.core.files.storage import FileSystemStorage
-
+from django.utils import timezone
 import locale
 from datetime import datetime
 
@@ -20,15 +20,15 @@ def report(request):
     all2 = Report.objects.all()
 
     for item in all2:
-        # ดึงค่าวัน เวลา และเดือนเป็นเลข
-        dt = item.data
+        dt = timezone.localtime(item.data)
         day = dt.day
         month = dt.month
         year = dt.year + 543
         time = dt.strftime("%H:%M")
 
-        # ประกอบเป็นข้อความ
-        item.formatted_date = f"{day} {THAI_MONTHS[month]} {year} {time} น."
+        # แยกเป็น date กับ time
+        item.formatted_date = f"{day} {THAI_MONTHS[month]} {year}"
+        item.formatted_time = f"{time} น."
 
     return render(request, "report.html", {"all2": all2})
 
