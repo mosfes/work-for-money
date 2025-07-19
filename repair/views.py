@@ -3,13 +3,34 @@ from django.http import HttpResponse
 from repair.models import Report,Number
 from django.core.files.storage import FileSystemStorage
 
+import locale
+from datetime import datetime
+
+THAI_MONTHS = [
+    "", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+]
+
+
 # Create your views here.
 def index(request):
     return render(request,"index.html")
 
 def report(request):
     all2 = Report.objects.all()
-    return render(request,"report.html",{"all2":all2})
+
+    for item in all2:
+        # ดึงค่าวัน เวลา และเดือนเป็นเลข
+        dt = item.data
+        day = dt.day
+        month = dt.month
+        year = dt.year + 543
+        time = dt.strftime("%H:%M")
+
+        # ประกอบเป็นข้อความ
+        item.formatted_date = f"{day} {THAI_MONTHS[month]} {year} {time} น."
+
+    return render(request, "report.html", {"all2": all2})
 
 def report_form(request):
     if request.method == 'POST':

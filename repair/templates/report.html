@@ -1,14 +1,510 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>ระบบจัดการงานซ่อม</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="5" cy="5" r="0.5" fill="rgba(255,255,255,0.1)"/><circle cx="15" cy="15" r="0.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+        
+        .search-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Noto Sans Thai', sans-serif;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .filter-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-tab {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .filter-tab.active {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+        }
+        
+        .filter-tab:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        
+        .tasks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        
+        .task-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.2);
+        }
+        
+        .task-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 12px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+        
+        .task-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+        
+        .task-status {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .status-finished {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        .status-pending {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
+        
+        .task-info {
+            margin-bottom: 15px;
+        }
+        
+        .task-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .task-detail-label {
+            color: #4a5568;
+            font-weight: 500;
+        }
+        
+        .task-detail-value {
+            color: #2d3748;
+        }
+        .work-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .work-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+        
+        .download-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tasks-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-tabs {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animations */
+        .task-card {
+            animation: slideUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .task-card:nth-child(1) { animation-delay: 0.1s; }
+        .task-card:nth-child(2) { animation-delay: 0.2s; }
+        .task-card:nth-child(3) { animation-delay: 0.3s; }
+        
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>การแจ้งซ่อม</h1>
     {% for a in all2 %}
-     <p>{{a.building}}</p>
+        <p>{{a.building}}</p>
+        <p>{{a.formatted_date}}</p>
     {% endfor %}
+    <div class="container">
+        <div class="header">
+            <h1>ระบบจัดการงานซ่อม</h1>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">18</div>
+                <div class="stat-label">งานทั้งหมด</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">รอดำเนินการ</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15</div>
+                <div class="stat-label">เสร็จสิ้น</div>
+            </div>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="ค้นหา">
+        </div>
+        
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterTasks('all')">ทั้งหมด</button>
+            <button class="filter-tab" onclick="filterTasks('pending')">รอดำเนินการ</button>
+            <button class="filter-tab" onclick="filterTasks('finished')">เสร็จสิ้น</button>
+        </div>
+        
+        <div class="tasks-grid">
+            <div class="task-card" data-status="pending">
+                <div class="task-status status-pending">รอดำเนินการ</div>
+                <div class="task-placeholder">
+                    📋 รูปภาพงานซ่อม
+                </div>
+                <div class="task-info">
+                    <div class="task-detail">
+                        <span class="task-detail-label">วันที่แจ้ง:</span>
+                        <span class="task-detail-value">18 กรกฎาคม 2025</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">เวลาที่แจ้ง:</span>
+                        <span class="task-detail-value">01:42 น.</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">อาคาร:</span>
+                        <span class="task-detail-value">77</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">ชั้น:</span>
+                        <span class="task-detail-value">77</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">หน่วยงานผู้แจ้ง:</span>
+                        <span class="task-detail-value">77</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">เบอร์ภายในที่ติดต่อ:</span>
+                        <span class="task-detail-value">77</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">รายการแจ้งซ่อม:</span>
+                        <span class="task-detail-value">77</span>
+                    </div>
+                </div>
+                <button class="work-btn">รับงาน</button>
+            </div>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="task-card" data-status="finished">
+                <div class="task-status status-finished">เสร็จสิ้น</div>
+                <img src="https://via.placeholder.com/300x200?text=งานซ่อม" alt="งานซ่อม" class="task-image">
+                <div class="task-info">
+                    <div class="task-detail">
+                        <span class="task-detail-label">วันที่แจ้ง:</span>
+                        <span class="task-detail-value">17 กรกฎาคม 2025</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">เวลาที่แจ้ง:</span>
+                        <span class="task-detail-value">18:48 น.</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">อาคาร:</span>
+                        <span class="task-detail-value">66</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">ชั้น:</span>
+                        <span class="task-detail-value">66</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">หน่วยงานผู้แจ้ง:</span>
+                        <span class="task-detail-value">66</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">เบอร์ภายในที่ติดต่อ:</span>
+                        <span class="task-detail-value">66</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">รายการแจ้งซ่อม:</span>
+                        <span class="task-detail-value">66</span>
+                    </div>
+                </div>
+                <button class="download-btn">โหลด PDF</button>
+            </div>
+            
+            <div class="task-card" data-status="finished">
+                <div class="task-status status-finished">เสร็จสิ้น</div>
+                <img src="https://via.placeholder.com/300x200?text=งานซ่อม+2" alt="งานซ่อม" class="task-image">
+                <div class="task-info">
+                    <div class="task-detail">
+                        <span class="task-detail-label">วันที่แจ้ง:</span>
+                        <span class="task-detail-value">16 กรกฎาคม 2025</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">เวลาที่แจ้ง:</span>
+                        <span class="task-detail-value">18:48 น.</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">อาคาร:</span>
+                        <span class="task-detail-value">44</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">ชั้น:</span>
+                        <span class="task-detail-value">44</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">หน่วยงานผู้แจ้ง:</span>
+                        <span class="task-detail-value">44</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">เบอร์ภายในที่ติดต่อ:</span>
+                        <span class="task-detail-value">44</span>
+                    </div>
+                    <div class="task-detail">
+                        <span class="task-detail-label">รายการแจ้งซ่อม:</span>
+                        <span class="task-detail-value">ยังไม่ได้</span>
+                    </div>
+                </div>
+                <button class="download-btn">โหลด PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function filterTasks(status) {
+            const cards = document.querySelectorAll('.task-card');
+            const tabs = document.querySelectorAll('.filter-tab');
+            
+            // Update active tab
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter cards
+            cards.forEach(card => {
+                if (status === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const cardStatus = card.getAttribute('data-status');
+                    card.style.display = cardStatus === status ? 'block' : 'none';
+                }
+            });
+        }
+        
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.task-card');
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+        
+        // Download button functionality
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('กำลังดาวน์โหลด PDF...');
+            });
+        });
+    </script>
 </body>
 </html>
