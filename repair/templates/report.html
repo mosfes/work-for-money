@@ -362,9 +362,15 @@
             {% for a in all2 %}
             <div class="task-card" data-status="0">
                 <div class="task-status status-0">รอดำเนินการ</div>
+                {% load static %}
                 <div class="task-placeholder">
+                    {% if a.image %}
                     <img src="{{ a.image.url }}" alt="รูปภาพงานซ่อม">
-                </div> <br>
+                    {% else %}
+                    <img src="{% static 'repair/images/AA.png' %}" alt="ไม่มีรูปภาพ">
+                    {% endif %}
+                </div>
+                <br>
                 <div class="task-info">
                     <div class="task-detail">
                         <span class="task-detail-label">วันที่แจ้ง:</span>
