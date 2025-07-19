@@ -267,11 +267,290 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
         .download-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tasks-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-tabs {
+                flex-direction: column;
+            }
+
+            .task-detail {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .task-detail-value {
+                text-align: left;
+                margin-top: 2px;
+            }
+        }
+
+        /* Popup Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: #a0aec0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #667eea;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .radio-item input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #667eea;
+        }
+
+        .radio-item label {
+            cursor: pointer;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .detail-form {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .detail-form.show {
+            display: block;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        .textarea-field {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .textarea-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .submit-btn {
+            flex: 1;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .cancel-btn {
+            flex: 1;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(229, 62, 62, 0.3);
+        }
+
+        /* Animations */
+        .task-card {
+            animation: slideUp 0.6s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .task-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .task-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .task-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .task-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .task-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive สำหรับ Modal */
+        @media (max-width: 768px) {
+            .modal-container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .form-buttons {
+                flex-direction: column;
+            }
+
+            .submit-btn,
+            .cancel-btn {
+                width: 100%;
+            }
         }
 
         /* Responsive Design */
@@ -395,71 +674,174 @@
                         <span class="task-detail-value">{{a.report}}</span>
                     </div>
                 </div>
-                <button class="work-btn">รับงาน</button>
+                <button class="work-btn" onclick="openModal()">รับงาน</button>
             </div>
+
+
             {% endfor %}
+            <!-- Modal Popup สำหรับฟอร์มรับงาน -->
+            <div id="repairModal" class="modal-overlay">
+                <div class="modal-container">
+                    <button class="close-btn" onclick="closeModal()">&times;</button>
 
-            <script>
+                    <div class="modal-header">
+                        <h2 class="modal-title">แบบฟอร์มรายงานผลการซ่อม</h2>
+                    </div>
+
+                    <form id="repairForm">
+                        <div class="form-section">
+                            <label class="form-label">ผลการซ่อม:</label>
+                            <div class="radio-group">
+                                <div class="radio-item">
+                                    <input type="radio" id="doneRadio" name="status" value="done"
+                                        onclick="showDetailForm('success')">
+                                    <label for="doneRadio">ดำเนินการเสร็จเรียบร้อย</label>
+                                </div>
+                                <div class="radio-item">
+                                    <input type="radio" id="notdoneRadio" name="status" value="notdone"
+                                        onclick="showDetailForm('unsuccess')">
+                                    <label for="notdoneRadio">ไม่สามารถดำเนินการได้</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="successForm" class="detail-form">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <label class="form-label">รายละเอียดการซ่อม/ความเห็นของช่าง:</label>
+                                <textarea class="textarea-field" placeholder="กรุณาระบุรายละเอียดการซ่อม"></textarea>
+                                <label class="form-label">อุปกรณ์ที่ใช้:</label>
+                                <textarea class="textarea-field"
+                                    placeholder="กรุณาระบุรายละเอียดอุปกรณ์ที่ใช้"></textarea>
+                            </form>
+                        </div>
+
+                        <div id="unsuccessForm" class="detail-form">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <label class="form-label">สาเหตุที่ไม่สามารถดำเนินการได้:</label>
+                                <textarea class="textarea-field"
+                                    placeholder="กรุณาระบุสาเหตุ เช่น ขาดวัสดุอุปกรณ์ ต้องใช้ช่างเฉพาะทาง หรือปัญหาอื่นๆ"></textarea>
+                            </form>
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="button" class="submit-btn" onclick="submitForm()">ส่งข้อมูล</button>
+                            <button type="button" class="cancel-btn" onclick="closeModal()">ยกเลิก</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 
 
 
 
+        <script>
+            // Modal Functions
+            function openModal() {
+                document.getElementById('repairModal').style.display = 'block';
+                document.body.style.overflow = 'hidden'; // ป้องกันการ scroll หน้าหลัก
+            }
 
+            function closeModal() {
+                document.getElementById('repairModal').style.display = 'none';
+                document.body.style.overflow = 'auto'; // เปิดการ scroll กลับ
+                resetForm();
+            }
 
+            function showDetailForm(type) {
+                const successForm = document.getElementById('successForm');
+                const unsuccessForm = document.getElementById('unsuccessForm');
 
+                // ซ่อนทั้งสองฟอร์ม
+                successForm.classList.remove('show');
+                unsuccessForm.classList.remove('show');
 
+                // แสดงฟอร์มที่เลือก
+                if (type === 'success') {
+                    successForm.classList.add('show');
+                } else if (type === 'unsuccess') {
+                    unsuccessForm.classList.add('show');
+                }
+            }
 
-
-
-
-
-
-
-
-
-
-                function filterTasks(status) {
-                    const cards = document.querySelectorAll('.task-card');
-                    const tabs = document.querySelectorAll('.filter-tab');
-
-                    // Update active tab
-                    tabs.forEach(tab => tab.classList.remove('active'));
-                    event.target.classList.add('active');
-
-                    // Filter cards
-                    if (status === 'all') {
-                        // โชว์ทุกการ์ด
-                        cards.forEach(card => {
-                            card.style.display = 'block';
-                        });
-                    } else {
-                        // โชว์เฉพาะตามสถานะ
-                        cards.forEach(card => {
-                            const cardStatus = card.getAttribute('data-status');
-                            card.style.display = cardStatus === status ? 'block' : 'none';
-                        });
-                    }
+            function submitForm() {
+                const status = document.querySelector('input[name="status"]:checked');
+                if (!status) {
+                    alert('กรุณาเลือกผลการซ่อม');
+                    return;
                 }
 
-                // Search functionality
-                document.querySelector('.search-input').addEventListener('input', function (e) {
-                    const searchTerm = e.target.value.toLowerCase();
-                    const cards = document.querySelectorAll('.task-card');
+                const activeForm = document.querySelector('.detail-form.show');
+                const detail = activeForm ? activeForm.querySelector('textarea').value : '';
 
+                if (!detail.trim()) {
+                    alert('กรุณากรอกรายละเอียด');
+                    return;
+                }
+
+                // ส่งข้อมูล (ตรงนี้สามารถต่อกับ backend ได้)
+                alert('ส่งข้อมูลเรียบร้อยแล้ว!');
+                closeModal();
+            }
+
+            function resetForm() {
+                document.getElementById('repairForm').reset();
+                document.querySelectorAll('.detail-form').forEach(form => {
+                    form.classList.remove('show');
+                });
+            }
+
+            // ปิด modal เมื่อคลิกด้านนอก
+            document.getElementById('repairModal').addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            function filterTasks(status) {
+                const cards = document.querySelectorAll('.task-card');
+                const tabs = document.querySelectorAll('.filter-tab');
+
+                // Update active tab
+                tabs.forEach(tab => tab.classList.remove('active'));
+                event.target.classList.add('active');
+
+                // Filter cards
+                if (status === 'all') {
+                    // โชว์ทุกการ์ด
                     cards.forEach(card => {
-                        const text = card.textContent.toLowerCase();
-                        card.style.display = text.includes(searchTerm) ? 'block' : 'none';
+                        card.style.display = 'block';
                     });
-                });
+                } else {
+                    // โชว์เฉพาะตามสถานะ
+                    cards.forEach(card => {
+                        const cardStatus = card.getAttribute('data-status');
+                        card.style.display = cardStatus === status ? 'block' : 'none';
+                    });
+                }
+            }
 
-                // Download button functionality
-                document.querySelectorAll('.download-btn').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        alert('กำลังดาวน์โหลด PDF...');
-                    });
+            // Search functionality
+            document.querySelector('.search-input').addEventListener('input', function (e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const cards = document.querySelectorAll('.task-card');
+
+                cards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    card.style.display = text.includes(searchTerm) ? 'block' : 'none';
                 });
-            </script>
+            });
+
+            // Download button functionality
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    alert('กำลังดาวน์โหลด PDF...');
+                });
+            });
+        </script>
 
 
 </body>

@@ -17,7 +17,7 @@ def index(request):
     return render(request,"index.html")
 
 def report(request):
-    all2 = Report.objects.all()
+    all2 = Report.objects.all().order_by('-data')
 
     for item in all2:
         dt = timezone.localtime(item.data)
