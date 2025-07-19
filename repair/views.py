@@ -42,3 +42,4 @@ def report_form(request):
         # return redirect('success')  
 
     return render(request, 'index.html')
+
