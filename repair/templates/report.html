@@ -688,7 +688,8 @@
                         <h2 class="modal-title">แบบฟอร์มรายงานผลการซ่อม</h2>
                     </div>
 
-                    <form id="repairForm">
+                    <form id="repairForm" action="" method="post">
+                        {% csrf_token %}
                         <div class="form-section">
                             <label class="form-label">ผลการซ่อม:</label>
                             <div class="radio-group">
@@ -707,7 +708,6 @@
 
                         <div id="successForm" class="detail-form">
                             <form action="" method="post">
-                                {% csrf_token %}
                                 <label class="form-label">รายละเอียดการซ่อม/ความเห็นของช่าง:</label>
                                 <textarea class="textarea-field" placeholder="กรุณาระบุรายละเอียดการซ่อม"></textarea>
                                 <label class="form-label">อุปกรณ์ที่ใช้:</label>
@@ -733,9 +733,6 @@
                 </div>
             </div>
         </div>
-
-
-
 
 
         <script>
@@ -824,16 +821,6 @@
                 }
             }
 
-            // Search functionality
-            document.querySelector('.search-input').addEventListener('input', function (e) {
-                const searchTerm = e.target.value.toLowerCase();
-                const cards = document.querySelectorAll('.task-card');
-
-                cards.forEach(card => {
-                    const text = card.textContent.toLowerCase();
-                    card.style.display = text.includes(searchTerm) ? 'block' : 'none';
-                });
-            });
 
             // Download button functionality
             document.querySelectorAll('.download-btn').forEach(btn => {

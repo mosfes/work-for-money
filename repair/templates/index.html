@@ -411,23 +411,73 @@
     const filePreview = document.getElementById('file-preview');
     const fileLabel = document.querySelector('.file-input-label');
 
+
     fileInput.addEventListener('change', function (e) {
       const files = e.target.files;
+
       if (files.length > 0) {
         let fileNames = [];
         for (let i = 0; i < files.length; i++) {
           fileNames.push(files[i].name);
         }
-        filePreview.innerHTML = <strong>ไฟล์ที่เลือก:</strong> ${ fileNames.join(', ') };
+        filePreview.innerHTML = `ไฟล์ที่เลือก: ${fileNames.join(', ')}`;
         filePreview.style.display = 'block';
         fileLabel.style.borderColor = '#667eea';
         fileLabel.style.backgroundColor = 'rgba(102,126,234,0.1)';
       } else {
         filePreview.style.display = 'none';
         fileLabel.style.borderColor = '#cbd5e0';
-        fileLabel.style.backgroundColor = 'rgba(255,255,255,0.😎';
+        fileLabel.style.backgroundColor = 'rgba(255,255,255,0.8)';
       }
     });
+
+    // ฟังก์ชันอัพโหลดไฟล์
+    function uploadFiles() {
+      const files = fileInput.files;
+
+      if (files.length === 0) {
+        alert('กรุณาเลือกไฟล์');
+        return;
+      }
+
+      const formData = new FormData();
+
+      // เพิ่มไฟล์ลงใน FormData
+      for (let i = 0; i < files.length; i++) {
+        formData.append('files[]', files[i]);
+      }
+
+      // เพิ่มข้อมูลอื่นๆ ถ้าต้องการ
+      formData.append('userId', '123');
+      formData.append('category', 'documents');
+
+      // ส่งไฟล์ไปยังเซิร์ฟเวอร์
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('อัพโหลดสำเร็จ:', data);
+          alert('อัพโหลดไฟล์สำเร็จ!');
+
+          // รีเซ็ตฟอร์ม
+          fileInput.value = '';
+          filePreview.style.display = 'none';
+        })
+        .catch(error => {
+          console.error('เกิดข้อผิดพลาด:', error);
+          alert('เกิดข้อผิดพลาดในการอัพโหลด');
+        });
+    }
+
+    // เรียกใช้เมื่อกดปุ่ม submit
+    document.getElementById('submitBtn').addEventListener('click', uploadFiles);
 
     // Form submission
     document.querySelector('form').addEventListener('submit', function (e) {
