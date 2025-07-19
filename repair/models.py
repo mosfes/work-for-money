@@ -9,11 +9,12 @@ class Report(models.Model):
     report = models.TextField()
     image=models.ImageField(upload_to="img",blank=True)
     number=models.IntegerField(blank=True)
-    data = models.DateField(auto_now_add=True)
+    data = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=80,blank=True)
     details = models.TextField(blank=True)
     equipment = models.TextField(blank=True)
     type = models.CharField(max_length=50,blank=True)
+    task_status = models.CharField(default="0", max_length=1)
 
     def __str__(self):
         return self.report
