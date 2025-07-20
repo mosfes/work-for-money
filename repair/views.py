@@ -102,12 +102,8 @@ def update_repair_from_modal(request):
 
             report_item.status = status_result
 
-            # อัปเดต task_status
-            # if status_result == 'done':
-            #     report_item.status = "1"  # 1 = เสร็จสิ้น
-            # elif status_result == 'notdone':
-            #     report_item.task_status = "0"  # 2 = ไม่สามารถทำได้
-
+            
+            
             report_item.task_status = "1"
             report_item.type = type_value
 
