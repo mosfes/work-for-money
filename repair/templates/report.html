@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
     <title>ระบบจัดการงานซ่อม</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
@@ -613,15 +619,15 @@
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">18</div>
+                <div class="stat-number">{{ all2.count }}</div>
                 <div class="stat-label">งานทั้งหมด</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">3</div>
+                <div class="stat-number">{{ pending_count }}</div>
                 <div class="stat-label">รอดำเนินการ</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">15</div>
+                <div class="stat-number">{{ completed_count }}</div>
                 <div class="stat-label">เสร็จสิ้น</div>
             </div>
         </div>
@@ -639,15 +645,26 @@
 
         <div class="tasks-grid">
             {% for a in all2 %}
-            <div class="task-card" data-status="0">
+            <div class="task-card" data-status="{{ a.task_status }}">
+                {% if a.task_status == "1" %}
+                <div class="task-status status-1">เสร็จสิ้น</div>
+                {% else %}
                 <div class="task-status status-0">รอดำเนินการ</div>
+                {% endif %}
+                {% load static %}
                 <div class="task-placeholder">
+                    {% if a.image %}
                     <img src="{{ a.image.url }}" alt="รูปภาพงานซ่อม">
-                </div> <br>
+                    {% else %}
+                    <img src="{% static 'repair/images/AA.png' %}" alt="ไม่มีรูปภาพ">
+                    {% endif %}
+                </div>
+                <br>
                 <div class="task-info">
                     <div class="task-detail">
                         <span class="task-detail-label">วันที่แจ้ง:</span>
                         <span class="task-detail-value">{{a.formatted_date}}</span>
+                    
                     </div>
                     <div class="task-detail">
                         <span class="task-detail-label">เวลาที่แจ้ง:</span>
@@ -674,11 +691,15 @@
                         <span class="task-detail-value">{{a.report}}</span>
                     </div>
                 </div>
-                <button class="work-btn" onclick="openModal()">รับงาน</button>
+                {% if a.task_status == "0" %}
+                <button class="work-btn" onclick="openModal({{ a.id }})">รับงาน</button>
+                {% else %}
+                <button class="work-btn" onclick="">โหลด PDF</button>
+                {% endif %}
             </div>
-
-
             {% endfor %}
+
+
             <!-- Modal Popup สำหรับฟอร์มรับงาน -->
             <div id="repairModal" class="modal-overlay">
                 <div class="modal-container">
@@ -688,24 +709,46 @@
                         <h2 class="modal-title">แบบฟอร์มรายงานผลการซ่อม</h2>
                     </div>
 
+<<<<<<< HEAD
+                    <form id="repairForm" action="{% url 'update_repair' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="report_id" id="modal_report_id">
+
+=======
                     <form id="repairForm" action="" method="post">
                         {% csrf_token %}
+>>>>>>> eb465a9d4391d5b69615e7a97344e0ab1ac0eebd
                         <div class="form-section">
                             <label class="form-label">ผลการซ่อม:</label>
+                            <h1>{{a.task_status}}</h1>
                             <div class="radio-group">
                                 <div class="radio-item">
                                     <input type="radio" id="doneRadio" name="status" value="done"
-                                        onclick="showDetailForm('success')">
+                                        onclick="showDetailForm('success')" required>
                                     <label for="doneRadio">ดำเนินการเสร็จเรียบร้อย</label>
                                 </div>
                                 <div class="radio-item">
                                     <input type="radio" id="notdoneRadio" name="status" value="notdone"
-                                        onclick="showDetailForm('unsuccess')">
+                                        onclick="showDetailForm('unsuccess')" required>
                                     <label for="notdoneRadio">ไม่สามารถดำเนินการได้</label>
                                 </div>
                             </div>               
                         </div>
 
+<<<<<<< HEAD
+
+                        <div id="successForm" class="detail-form" style="display:none;">
+                            <label class="form-label">รายละเอียดการซ่อม/ความเห็นของช่าง:</label>
+                            <textarea name="details" class="textarea-field" id="successDetails"
+                                placeholder="กรุณาระบุรายละเอียดการซ่อม"></textarea>
+
+                            <label class="form-label">อุปกรณ์ที่ใช้:</label>
+                            <textarea name="equipment" class="textarea-field" id="successEquipment"
+                                placeholder="กรุณาระบุรายละเอียดอุปกรณ์ที่ใช้"></textarea>
+                            <label class="form-label">ประเภทงาน</label>
+                            <input type="text" class="form-control" name="type" id="">
+
+=======
                         <div id="successForm" class="detail-form">
                             <form action="" method="post">
                                 <label class="form-label">รายละเอียดการซ่อม/ความเห็นของช่าง:</label>
@@ -714,82 +757,161 @@
                                 <textarea class="textarea-field"
                                     placeholder="กรุณาระบุรายละเอียดอุปกรณ์ที่ใช้"></textarea>
                             </form>
+>>>>>>> eb465a9d4391d5b69615e7a97344e0ab1ac0eebd
                         </div>
 
-                        <div id="unsuccessForm" class="detail-form">
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <label class="form-label">สาเหตุที่ไม่สามารถดำเนินการได้:</label>
-                                <textarea class="textarea-field"
-                                    placeholder="กรุณาระบุสาเหตุ เช่น ขาดวัสดุอุปกรณ์ ต้องใช้ช่างเฉพาะทาง หรือปัญหาอื่นๆ"></textarea>
-                            </form>
+                        <div id="unsuccessForm" class="detail-form" style="display:none;">
+                            <label class="form-label">สาเหตุที่ไม่สามารถดำเนินการได้:</label>
+                            <textarea name="details" class="textarea-field" id="unsuccessDetails"
+                                placeholder="กรุณาระบุสาเหตุ เช่น ขาดวัสดุอุปกรณ์ ต้องใช้ช่างเฉพาะทาง หรือปัญหาอื่นๆ"></textarea>
+                            <label class="form-label">ประเภทงาน</label>
+                            <input type="text" class="form-control" name="type" id="">
                         </div>
 
                         <div class="form-buttons">
-                            <button type="button" class="submit-btn" onclick="submitForm()">ส่งข้อมูล</button>
+                            <button type="submit" class="submit-btn">ส่งข้อมูล</button>
                             <button type="button" class="cancel-btn" onclick="closeModal()">ยกเลิก</button>
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
+    </div>
+    </div>
 
 
-        <script>
-            // Modal Functions
-            function openModal() {
-                document.getElementById('repairModal').style.display = 'block';
-                document.body.style.overflow = 'hidden'; // ป้องกันการ scroll หน้าหลัก
+
+
+    <script>
+        // Modal Functions
+        // ของใหม่
+        function openModal(reportId) {
+            // 1. ค้นหา input ที่ซ่อนอยู่ด้วย id ที่เราตั้งไว้
+            const reportIdInput = document.getElementById('modal_report_id');
+
+            // 2. กำหนดค่า (value) ของ input นั้นให้เป็น ID ที่ได้รับมาจากการคลิก
+            reportIdInput.value = reportId;
+
+            // 3. แสดง Modal
+            document.getElementById('repairModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+
+            // Debug: ลองดูใน console ของ browser ว่า ID เข้ามาถูกต้องไหม
+            console.log("Modal opened for Report ID:", reportId);
+        }
+
+        function closeModal() {
+            document.getElementById('repairModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            // resetForm(); // ฟังก์ชัน resetForm ของคุณทำหน้าที่นี้อยู่แล้ว ดีมากครับ
+            document.getElementById('repairForm').reset(); // เคลียร์ฟอร์ม
+            document.getElementById('successForm').style.display = 'none'; // ซ่อนฟอร์มย่อย
+            document.getElementById('unsuccessForm').style.display = 'none'; // ซ่อนฟอร์มย่อย
+        }
+
+        function showDetailForm(type) {
+            const successForm = document.getElementById('successForm');
+            const unsuccessForm = document.getElementById('unsuccessForm');
+
+            // ----> แก้ไขตรงนี้: จาก 'textarea' เป็น 'input, textarea' <----
+            const successInputs = successForm.querySelectorAll('input, textarea');
+            const unsuccessInputs = unsuccessForm.querySelectorAll('input, textarea');
+
+            if (type === 'success') {
+                successForm.style.display = 'block';
+                successInputs.forEach(input => input.disabled = false);
+
+                unsuccessForm.style.display = 'none';
+                unsuccessInputs.forEach(input => input.disabled = true);
+
+            } else if (type === 'unsuccess') {
+                successForm.style.display = 'none';
+                successInputs.forEach(input => input.disabled = true);
+
+                unsuccessForm.style.display = 'block';
+                unsuccessInputs.forEach(input => input.disabled = false);
+            }
+        }
+
+        function validateForm() {
+            const status = document.querySelector('input[name="status"]:checked');
+            if (!status) {
+                alert('กรุณาเลือกผลการซ่อม');
+                return false;
             }
 
-            function closeModal() {
-                document.getElementById('repairModal').style.display = 'none';
-                document.body.style.overflow = 'auto'; // เปิดการ scroll กลับ
-                resetForm();
+            const details = document.querySelector('textarea[name="details"]').value;
+            if (!details.trim()) {
+                alert('กรุณากรอกรายละเอียด');
+                return false;
             }
 
-            function showDetailForm(type) {
-                const successForm = document.getElementById('successForm');
-                const unsuccessForm = document.getElementById('unsuccessForm');
+            // Debug: แสดงข้อมูลก่อนส่ง
+            console.log('Status:', status.value);
+            console.log('Details:', details);
 
-                // ซ่อนทั้งสองฟอร์ม
-                successForm.classList.remove('show');
-                unsuccessForm.classList.remove('show');
+            return true;
+        }
 
-                // แสดงฟอร์มที่เลือก
-                if (type === 'success') {
-                    successForm.classList.add('show');
-                } else if (type === 'unsuccess') {
-                    unsuccessForm.classList.add('show');
-                }
+        // เพิ่ม event listener สำหรับ form submission
+        document.getElementById('repairForm').addEventListener('submit', function (e) {
+            console.log('Form is being submitted...');
+
+            // ตรวจสอบข้อมูลใน form
+            const formData = new FormData(this);
+            for (let [key, value] of formData.entries()) {
+                console.log(key + ': ' + value);
+            }
+        });
+
+        function submitForm() {
+            const status = document.querySelector('input[name="status"]:checked');
+            if (!status) {
+                alert('กรุณาเลือกผลการซ่อม');
+                return;
             }
 
-            function submitForm() {
-                const status = document.querySelector('input[name="status"]:checked');
-                if (!status) {
-                    alert('กรุณาเลือกผลการซ่อม');
-                    return;
+            const activeForm = document.querySelector('.detail-form.show');
+            const detail = activeForm ? activeForm.querySelector('textarea').value : '';
+
+            document.getElementById('repairForm').addEventListener('submit', function (e) {
+                console.log('Form is being submitted...');
+
+                // ตรวจสอบข้อมูลใน form
+                const formData = new FormData(this);
+                for (let [key, value] of formData.entries()) {
+                    console.log(key + ': ' + value);
                 }
+            });
 
-                const activeForm = document.querySelector('.detail-form.show');
-                const detail = activeForm ? activeForm.querySelector('textarea').value : '';
+            if (!detail.trim()) {
+                alert('กรุณากรอกรายละเอียด');
+                return;
+            }
 
-                if (!detail.trim()) {
-                    alert('กรุณากรอกรายละเอียด');
-                    return;
-                }
+            // ส่งข้อมูล (ตรงนี้สามารถต่อกับ backend ได้)
+            alert('ส่งข้อมูลเรียบร้อยแล้ว!');
+            closeModal();
+        }
 
-                // ส่งข้อมูล (ตรงนี้สามารถต่อกับ backend ได้)
-                alert('ส่งข้อมูลเรียบร้อยแล้ว!');
+        function resetForm() {
+            document.getElementById('repairForm').reset();
+            document.querySelectorAll('.detail-form').forEach(form => {
+                form.classList.remove('show');
+            });
+        }
+
+        // ปิด modal เมื่อคลิกด้านนอก
+        document.getElementById('repairModal').addEventListener('click', function (e) {
+            if (e.target === this) {
                 closeModal();
             }
+        });
 
-            function resetForm() {
-                document.getElementById('repairForm').reset();
-                document.querySelectorAll('.detail-form').forEach(form => {
-                    form.classList.remove('show');
-                });
-            }
+        function filterTasks(status) {
+            const cards = document.querySelectorAll('.task-card');
+            const tabs = document.querySelectorAll('.filter-tab');
 
             // ปิด modal เมื่อคลิกด้านนอก
             document.getElementById('repairModal').addEventListener('click', function (e) {
@@ -821,14 +943,46 @@
                 }
             }
 
+<<<<<<< HEAD
+            // Update active tab
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
 
-            // Download button functionality
-            document.querySelectorAll('.download-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    alert('กำลังดาวน์โหลด PDF...');
+            // Filter cards
+            if (status === 'all') {
+                // โชว์ทุกการ์ด
+                cards.forEach(card => {
+                    card.style.display = 'block';
                 });
+            } else {
+                // โชว์เฉพาะตามสถานะ
+                cards.forEach(card => {
+                    const cardStatus = card.getAttribute('data-status');
+                    card.style.display = cardStatus === status ? 'block' : 'none';
+                });
+            }
+        }
+=======
+>>>>>>> eb465a9d4391d5b69615e7a97344e0ab1ac0eebd
+
+        // Search functionality
+        document.querySelector('.search-input').addEventListener('input', function (e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.task-card');
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.style.display = text.includes(searchTerm) ? 'block' : 'none';
             });
-        </script>
+        });
+
+        // Download button functionality
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                alert('กำลังดาวน์โหลด PDF...');
+            });
+        });
+    </script>
 
 
 </body>

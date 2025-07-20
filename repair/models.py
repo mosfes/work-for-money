@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 class Report(models.Model):
+    id = models.AutoField(primary_key=True)
     building = models.CharField(max_length=120)
     floor = models.CharField(max_length=3)
     agency = models.CharField(max_length=255)
