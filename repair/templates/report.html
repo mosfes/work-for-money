@@ -619,15 +619,15 @@
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">18</div>
+                <div class="stat-number">{{ all2.count }}</div>
                 <div class="stat-label">งานทั้งหมด</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">3</div>
+                <div class="stat-number">{{ pending_count }}</div>
                 <div class="stat-label">รอดำเนินการ</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">15</div>
+                <div class="stat-number">{{ completed_count }}</div>
                 <div class="stat-label">เสร็จสิ้น</div>
             </div>
         </div>
@@ -645,8 +645,12 @@
 
         <div class="tasks-grid">
             {% for a in all2 %}
-            <div class="task-card" data-status="0">
+            <div class="task-card" data-status="{{ a.task_status }}">
+                {% if a.task_status == "1" %}
+                <div class="task-status status-1">เสร็จสิ้น</div>
+                {% else %}
                 <div class="task-status status-0">รอดำเนินการ</div>
+                {% endif %}
                 {% load static %}
                 <div class="task-placeholder">
                     {% if a.image %}
@@ -660,7 +664,7 @@
                     <div class="task-detail">
                         <span class="task-detail-label">วันที่แจ้ง:</span>
                         <span class="task-detail-value">{{a.formatted_date}}</span>
-                        <h1>AA {{ a.id }}</h1>
+                    
                     </div>
                     <div class="task-detail">
                         <span class="task-detail-label">เวลาที่แจ้ง:</span>
@@ -687,7 +691,11 @@
                         <span class="task-detail-value">{{a.report}}</span>
                     </div>
                 </div>
+                {% if a.task_status == "0" %}
                 <button class="work-btn" onclick="openModal({{ a.id }})">รับงาน</button>
+                {% else %}
+                <button class="work-btn" onclick="">โหลด PDF</button>
+                {% endif %}
             </div>
             {% endfor %}
 
@@ -707,7 +715,7 @@
 
                         <div class="form-section">
                             <label class="form-label">ผลการซ่อม:</label>
-                            <h1>AA{{a.id}}</h1>
+                            <h1>{{a.task_status}}</h1>
                             <div class="radio-group">
                                 <div class="radio-item">
                                     <input type="radio" id="doneRadio" name="status" value="done"
@@ -722,6 +730,7 @@
                             </div>
                         </div>
 
+
                         <div id="successForm" class="detail-form" style="display:none;">
                             <label class="form-label">รายละเอียดการซ่อม/ความเห็นของช่าง:</label>
                             <textarea name="details" class="textarea-field" id="successDetails"
@@ -732,6 +741,7 @@
                                 placeholder="กรุณาระบุรายละเอียดอุปกรณ์ที่ใช้"></textarea>
                             <label class="form-label">ประเภทงาน</label>
                             <input type="text" class="form-control" name="type" id="">
+
                         </div>
 
                         <div id="unsuccessForm" class="detail-form" style="display:none;">
@@ -753,7 +763,6 @@
         </div>
     </div>
     </div>
-
 
 
 
@@ -887,6 +896,36 @@
         function filterTasks(status) {
             const cards = document.querySelectorAll('.task-card');
             const tabs = document.querySelectorAll('.filter-tab');
+
+            // ปิด modal เมื่อคลิกด้านนอก
+            document.getElementById('repairModal').addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            function filterTasks(status) {
+                const cards = document.querySelectorAll('.task-card');
+                const tabs = document.querySelectorAll('.filter-tab');
+
+                // Update active tab
+                tabs.forEach(tab => tab.classList.remove('active'));
+                event.target.classList.add('active');
+
+                // Filter cards
+                if (status === 'all') {
+                    // โชว์ทุกการ์ด
+                    cards.forEach(card => {
+                        card.style.display = 'block';
+                    });
+                } else {
+                    // โชว์เฉพาะตามสถานะ
+                    cards.forEach(card => {
+                        const cardStatus = card.getAttribute('data-status');
+                        card.style.display = cardStatus === status ? 'block' : 'none';
+                    });
+                }
+            }
 
             // Update active tab
             tabs.forEach(tab => tab.classList.remove('active'));

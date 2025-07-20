@@ -18,20 +18,31 @@ def index(request):
     return render(request,"index.html")
 
 def report(request):
-    all2 = Report.objects.all().order_by('-data')
+    all_reports = Report.objects.all().order_by('-data')
 
-    for item in all2:
+    total_count = all_reports.count()
+    pending_count = all_reports.filter(task_status=0).count()
+    completed_count = all_reports.filter(task_status=1).count()
+
+    for item in all_reports:
         dt = timezone.localtime(item.data)
         day = dt.day
         month = dt.month
         year = dt.year + 543
         time = dt.strftime("%H:%M")
 
-        # แยกเป็น date กับ time
         item.formatted_date = f"{day} {THAI_MONTHS[month]} {year}"
         item.formatted_time = f"{time} น."
 
-    return render(request, "report.html", {"all2": all2})
+    context = {
+        'all2': all_reports,
+        'total_count': total_count,
+        'pending_count': pending_count,
+        'completed_count': completed_count,
+    }
+
+
+    return render(request, "report.html", context)
 
 def report_form(request):
     if request.method == 'POST':
