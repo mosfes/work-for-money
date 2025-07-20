@@ -709,10 +709,15 @@
                         <h2 class="modal-title">แบบฟอร์มรายงานผลการซ่อม</h2>
                     </div>
 
+<<<<<<< HEAD
                     <form id="repairForm" action="{% url 'update_repair' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="report_id" id="modal_report_id">
 
+=======
+                    <form id="repairForm" action="" method="post">
+                        {% csrf_token %}
+>>>>>>> eb465a9d4391d5b69615e7a97344e0ab1ac0eebd
                         <div class="form-section">
                             <label class="form-label">ผลการซ่อม:</label>
                             <h1>{{a.task_status}}</h1>
@@ -730,6 +735,7 @@
                             </div>
                         </div>
 
+<<<<<<< HEAD
 
                         <div id="successForm" class="detail-form" style="display:none;">
                             <label class="form-label">รายละเอียดการซ่อม/ความเห็นของช่าง:</label>
@@ -742,6 +748,16 @@
                             <label class="form-label">ประเภทงาน</label>
                             <input type="text" class="form-control" name="type" id="">
 
+=======
+                        <div id="successForm" class="detail-form">
+                            <form action="" method="post">
+                                <label class="form-label">รายละเอียดการซ่อม/ความเห็นของช่าง:</label>
+                                <textarea class="textarea-field" placeholder="กรุณาระบุรายละเอียดการซ่อม"></textarea>
+                                <label class="form-label">อุปกรณ์ที่ใช้:</label>
+                                <textarea class="textarea-field"
+                                    placeholder="กรุณาระบุรายละเอียดอุปกรณ์ที่ใช้"></textarea>
+                            </form>
+>>>>>>> eb465a9d4391d5b69615e7a97344e0ab1ac0eebd
                         </div>
 
                         <div id="unsuccessForm" class="detail-form" style="display:none;">
@@ -927,6 +943,7 @@
                 }
             }
 
+<<<<<<< HEAD
             // Update active tab
             tabs.forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
@@ -945,6 +962,8 @@
                 });
             }
         }
+=======
+>>>>>>> eb465a9d4391d5b69615e7a97344e0ab1ac0eebd
 
         // Search functionality
         document.querySelector('.search-input').addEventListener('input', function (e) {
