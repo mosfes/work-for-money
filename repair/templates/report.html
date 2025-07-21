@@ -954,7 +954,7 @@
                 fetch(url2)
                     .then(res => res.json())
                     .then(rep => {
-                        const arr = rep.data; // [{type: 'A', count: 5}, ...]
+                        const arr = rep;
                         const labels = arr.map(item => item.type);
                         const counts = arr.map(item => item.count);
 

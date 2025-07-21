@@ -588,6 +588,7 @@ def get_docs_as_html():
 
 from django.http import JsonResponse
 from django.db.models import Count
+from .models import Report  # ถ้ายังไม่ได้ import
 
 
 def report_type_counts_api(request):
@@ -597,5 +598,5 @@ def report_type_counts_api(request):
         .annotate(count=Count("id"))
         .order_by("type")
     )
-    # คืนเป็น JSON
     data = [{"type": r["type"], "count": r["count"]} for r in qs]
+    return JsonResponse(data, safe=False)
