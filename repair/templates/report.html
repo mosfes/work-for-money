@@ -94,31 +94,6 @@
             font-weight: 500;
         }
 
-        .search-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: 'Noto Sans Thai', sans-serif;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
 
         .filter-tabs {
             display: flex;
@@ -496,6 +471,20 @@
             box-shadow: 0 5px 15px rgba(229, 62, 62, 0.3);
         }
 
+        #chartContainer {
+            background: #fff !important;
+            border-radius: 22px;
+            box-shadow: 0 3px 16px rgba(0, 0, 0, 0.08);
+            padding: 32px 14px;
+            margin: 32px auto 16px auto;
+            max-width: 650px;
+            position: relative;
+            z-index: 10;
+            display: none;
+            /* เปิดเมื่อ toggle */
+        }
+
+
         /* Animations */
         .task-card {
             animation: slideUp 0.6s ease forwards;
@@ -632,9 +621,19 @@
             </div>
         </div>
 
-        <div class="search-container">
-            <input type="text" class="search-input" placeholder="ค้นหา">
+        <!-- <div id="chartContainer" style="display:none;">
+            <canvas id="workTypeChart"></canvas>
         </div>
+        <button onclick="toggleChart()">ดูสถิติ</button> -->
+
+        <div class="row justify-content-center" style="z-index:11;position:relative;">
+            <button type="button" class="filter-tab" onclick="toggleChart()">ดูสถิติ</button>
+        </div>
+        <div id="chartContainer">
+            <canvas id="workTypeChart"></canvas>
+        </div><br>
+
+
 
         <div class="filter-tabs">
             <button class="filter-tab active" onclick="filterTasks('all')">ทั้งหมด</button>
@@ -694,7 +693,7 @@
                 {% if a.task_status == "0" %}
                 <button class="work-btn" onclick="openModal({{ a.id }})">รับงาน</button>
                 {% else %}
-                <button class="work-btn" onclick="">โหลด PDF</button>
+                <a href="{% url 'download_pdf' a.id %}" class="work-btn">โหลด PDF</a>
                 {% endif %}
             </div>
             {% endfor %}
@@ -763,7 +762,7 @@
 
 
 
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Modal Functions
         // ของใหม่
@@ -943,23 +942,67 @@
             }
         }
 
-        // Search functionality
-        document.querySelector('.search-input').addEventListener('input', function (e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const cards = document.querySelectorAll('.task-card');
+        const url2 = "/api/report-type-counts/";
+        let chartInstance;
 
-            cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                card.style.display = text.includes(searchTerm) ? 'block' : 'none';
-            });
-        });
+        function toggleChart() {
+            const chartDiv = document.getElementById("chartContainer");
 
-        // Download button functionality
-        document.querySelectorAll('.download-btn').forEach(btn => {
-            btn.addEventListener('click', function () {
-                alert('กำลังดาวน์โหลด PDF...');
-            });
-        });
+            if (chartDiv.style.display === "none") {
+                chartDiv.style.display = "block";
+
+                fetch(url2)
+                    .then(res => res.json())
+                    .then(rep => {
+                        const arr = rep.data; // [{type: 'A', count: 5}, ...]
+                        const labels = arr.map(item => item.type);
+                        const counts = arr.map(item => item.count);
+
+                        const ctx = document.getElementById("workTypeChart").getContext("2d");
+                        if (chartInstance) chartInstance.destroy();
+
+                        chartInstance = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'ประเภทงาน',
+                                    data: counts,
+                                    backgroundColor: [
+                                        '#007bff', '#28a745', '#ffc107', '#dc3545', '#17a2b8',
+                                        '#6f42c1', '#fd7e14', '#20c997', '#6c757d', '#343a40'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: { position: 'top' },
+                                    title: { display: true, text: 'สถิติตามประเภทงาน' }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: {
+                                            stepSize: 1,
+                                            precision: 0
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.error("โหลดข้อมูลประเภทงานล้มเหลว:", err);
+                        alert("เกิดข้อผิดพลาดในการโหลดประเภทงาน");
+                    });
+            } else {
+                chartDiv.style.display = "none";
+            }
+        }
+
+
     </script>
 
 

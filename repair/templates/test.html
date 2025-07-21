@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>ใบแจ้งซ่อม / ติดตั้งอุปกรณ์</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun&display=swap');
+        body {
+            font-family: 'Sarabun', sans-serif;
+            padding: 40px;
+            max-width: 210mm;
+            margin: 0 auto;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .text-center {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .section {
+            margin-top: 10px;
+        }
+        .line {
+            border-bottom: 1px dotted #000;
+            display: inline-block;
+            min-width: 200px;
+            margin: 0 5px;
+        }
+        .long-line {
+            border-bottom: 1px dotted #000;
+            display: block;
+            width: 100%;
+            margin: 4px 0;
+        }
+        .flex {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+        .column {
+            flex: 1;
+            padding: 0 10px;
+        }
+        .checkbox {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 1px solid #000;
+            margin-right: 5px;
+        }
+        .signature {
+            margin-top: 30px;
+        }
+        .signature .line {
+            min-width: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="text-center">ใบแจ้งซ่อม / ติดตั้งอุปกรณ์<br>งานไฟฟ้าและระบบ</div>
+    <div class="flex">
+        <div>เลขที่ <span class="line" style="width: 80px;"></span></div>
+        <div>วันที่ <span class="line" style="width: 60px;"></span> เดือน <span class="line" style="width: 60px;"></span> ปี <span class="line" style="width: 60px;"></span></div>
+        <div>เวลาที่แจ้ง <span class="line" style="width: 80px;"></span> น.</div>
+    </div>
+
+    <div class="section">
+        อาคาร <span class="line" style="width: 400px;"></span> ชั้น <span class="line" style="width: 50px;"></span><br>
+        หน่วยงานผู้แจ้ง <span class="line" style="width: 300px;"></span> เบอร์ภายในที่ติดต่อได้ <span class="line" style="width: 200px;"></span>
+    </div>
+
+    <div class="section">
+        รายการแจ้งซ่อม<br>
+        <div class="long-line"></div>
+        <div class="long-line"></div>
+        <div class="long-line"></div>
+        <div class="long-line"></div>
+    </div>
+
+    <div class="section flex">
+        <div class="column">ลงชื่อ <span class="line" style="width: 100px;"></span><br>( <span class="line" style="width: 120px;"></span> )<br>ผู้แจ้งซ่อม</div>
+        <div class="column">ลงชื่อ <span class="line" style="width: 100px;"></span><br>( <span class="line" style="width: 120px;"></span> )<br>ผู้รับแจ้ง</div>
+    </div>
+
+    <div class="section">ลงชื่อ <span class="line" style="width: 150px;"></span> หัวหน้าหน่วยงานผู้แจ้ง<br>
+    ( <span class="line" style="width: 200px;"></span> )
+    </div>
+
+    <hr style="margin: 20px 0;">
+
+    <div class="text-center">สำหรับช่าง</div>
+    <div class="section">
+        ผลการซ่อม 
+        <span class="checkbox"></span> ดำเนินการเสร็จเรียบร้อย 
+        <span class="checkbox"></span> ไม่สามารถดำเนินการได้
+    </div>
+
+    <div class="section">
+        รายละเอียดการซ่อม / ความเห็นของช่าง<br>
+        <div class="long-line"></div>
+        <div class="long-line"></div>
+        <div class="long-line"></div>
+    </div>
+
+    <div class="section">
+        อุปกรณ์ที่ใช้<br>
+        <div class="long-line"></div>
+        <div class="long-line"></div>
+    </div>
+
+    <div class="section">
+        *** กรณีไม่สามารถซ่อมได้<br>
+    </div>
+
+    <div class="section flex signature">
+        <div class="column">ลงชื่อ <span class="line" style="width: 100px;"></span><br>( <span class="line" style="width: 120px;"></span> )<br>ผู้ปฏิบัติงาน<br>วันที่ <span class="line" style="width: 100px;"></span></div>
+        <div class="column">ลงชื่อ <span class="line" style="width: 100px;"></span><br>( <span class="line" style="width: 120px;"></span> )<br>ผู้แจ้งซ่อม<br>วันที่ <span class="line" style="width: 100px;"></span></div>
+    </div>
+
+</body>
+</html>
